@@ -5,12 +5,31 @@ from sklearn import svm
 from sklearn import datasets
 from sklearn.feature_extraction import DictVectorizer
 import numpy as np
+from nltk import word_tokenize
 
 def text(fiel):
     lst = []
     for line in fiel:
         lst.append(line)
     return lst
+
+def numPunctuation(tokenList):
+    punctuationList = [',' , '.' , ';', '!', '@', '#', '$', '%', '&', '*', '(', ')', ':' ,'?' , '/' , ':']
+
+    numPunctuation = 0
+
+    for token in tokenList:
+        for char in token:
+            if char in punctuationList:
+                numPunctuation += 1
+
+    return numPunctuation
+
+def preProcess(message):
+    """lowercase and tokenize input"""
+    message_tok = word_tokenize(message)
+    message_tok = [w.lower() for w in message_tok]
+    return message_tok
 
 def categorize(lst):
     hamlist, spamlist = [], []
@@ -30,5 +49,8 @@ def main():
     print(spamlist[0])
     print(len(hamlist), len(spamlist))
     print(5574 - (len(hamlist)+len(spamlist)))
+
+    print preProcess(hamlist[0])
+    print numPunctuation(preProcess(hamlist[0]))
 
 main()
