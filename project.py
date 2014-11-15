@@ -1,3 +1,11 @@
+import re
+import nltk.data
+import sys
+from sklearn import svm
+from sklearn import datasets
+from sklearn.feature_extraction import DictVectorizer
+import numpy as np
+
 def text(fiel):
     lst = []
     for line in fiel:
