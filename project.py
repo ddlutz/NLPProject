@@ -178,34 +178,21 @@ def main():
     print 'lengths'
     print len(svmTestDataVectored)
     print len(svmTestDataVectored[0])
-    svmClass = svm.SVC(kernel = 'linear', gamma=0.0005, C = 600)
+    svmClass = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 600)
     print "fitting SVM"
     test_predict = svmClass.fit(svmTrainDataVectored, svmAnsTrain).predict(svmTestDataVectored)
 
+    cm = confusion_matrix(svmAnsTest, test_predict)
 
+    print cm
+
+    filters = []
     from sklearn.feature_selection import chi2, SelectKBest
     selector = SelectKBest(chi2).fit(svmTrainDataVectored, svmAnsTrain) # There is more to SelectKBest; cf. documentation
     top10 = selector.scores_.argsort()[::-1][:10]
     for f in top10:
         print '%.3e\t%s' % (selector.pvalues_[f], vec.get_feature_names()[f])
-
-    w = svmClass.coef_
-    ws = sorted([abs(q) for q in w[0]], reverse=True)
-    ws = ws[0:10]
-
-    featureIndexes = []
-    for i in range(len(w[0])):
-        if w[0][i] in ws or (-1) * w[0][i] in ws:
-            featureIndexes.append(i)
-
-    print "indexes: "
-    print featureIndexes
-    filters = []
-    for index in featureIndexes:
-        print allTestData[0][0].keys()[index]
-        filters.append(allTestData[0][0].keys()[index])
-
-
+        filters.append(vec.get_feature_names()[f])
 
     hamFeaturedTrain = [ (getFeaturesFiltered(vocab, h,filters), 0) for h in hamProcessedTrain]
     spamFeaturedTrain = [ (getFeaturesFiltered(vocab, s,filters), 1) for s in spamProcessedTrain]
@@ -227,7 +214,7 @@ def main():
     svmTestDataVectored = vec.fit_transform(svmDataTest).toarray()
 
 
-    svmClass = svm.SVC(kernel = 'linear', gamma=0.0005, C = 600)
+    svmClass = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 600)
     print "fitting SVM again" 
     test_predict = svmClass.fit(svmTrainDataVectored, svmAnsTrain).predict(svmTestDataVectored)
 
