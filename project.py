@@ -64,6 +64,36 @@ def containsDate(tokenList):
             return True
 
     return False
+    
+"""
+def phoneNumber(msg):
+    result = re.search(r"\d{5,12}", msg)
+    if result == None:
+        return False
+    return True
+"""
+    
+def phoneNumber(tokenList):
+    p = re.compile(r"\d{5,12}")
+    for token in tokenList:
+        if p.search(token) != None:
+            return True
+    return False
+
+"""
+def emailAddress(msg):
+    result = re.search(r"\w+@\w+.\w+", msg)
+    if result == None:
+        return False
+    return True
+"""
+
+def emailAddress(tokenList):
+    p = re.compile(r"\w+@\w+.\w+")
+    for token in tokenList:
+        if p.search(token) != None:
+            return True
+    return False
 
 def preProcess(message):
     """lowercase and tokenize input"""
@@ -101,6 +131,8 @@ def getFeatures(vocab, tokenList):
     features['ContainsDate'] = containsDate(tokenList)
     features['numPunctuation'] = numPunctuation(tokenList)
     features['numChars'] = numChars(tokenList)
+    features['emailAddress'] = emailAddress(tokenList)
+    features['phoneNumber'] = phoneNumber(tokenList)
 
     return features
 
@@ -121,6 +153,10 @@ def getFeaturesFiltered(vocab, tokenList, filters):
         features['numPunctuation'] = numPunctuation(tokenList)
     if 'numChars' in filters:
         features['numChars'] = numChars(tokenList)
+    if 'emailAddress' in filters:
+        features['emailAddress'] = emailAddress(tokenList)
+    if 'phoneNumber' in filters:
+        features['phoneNumber'] = phoneNumber(tokenList)
 
 
     return features
