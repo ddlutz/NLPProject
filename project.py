@@ -215,12 +215,31 @@ def main():
     print len(svmTestDataVectored)
     print len(svmTestDataVectored[0])
     svmClass = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 600)
+    
+    """
+    Potential classifiers - unused, obvioulsy
+    svm2 = svm.SVC(kernel = 'rbf', gamma=0.005, C = 600)
+    svm3 = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 10)
+    svm4 = svm.SVC(kernel = 'rbf', gamma=0.005, C = 10)
+    svm5 = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 1)
+    svm6 = svm.SVC(kernel = 'rbf', gamma=0.005, C = 1)
+    svm7 = svm.SVC(kernel = 'rbf', gamma=0.00005, C = 600)
+    svm8 = svm.SVC(kernel = 'rbf', gamma=0.00005, C = 10)
+    svm9 = svm.SVC(kernel = 'rbf', gamma=0.00005, C = 1)
+    
+    After narrowing down gamma and C values, these svms were tested but showed
+    the same results as the one used.
+    
+    svm10 = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 500)
+    svm11 = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 700)
+    """
     print "fitting SVM"
     test_predict = svmClass.fit(svmTrainDataVectored, svmAnsTrain).predict(svmTestDataVectored)
 
     cm = confusion_matrix(svmAnsTest, test_predict)
 
-    print cm
+    print svmClass.get_params() #Print out params
+    print cm                    #Print confusion matrix
 
     filters = []
     from sklearn.feature_selection import chi2, SelectKBest
