@@ -90,10 +90,12 @@ def emailAddress(msg):
 
 def emailAddress(tokenList):
     p = re.compile(r"\w+@\w+.\w+")
-    for token in tokenList:
-        if p.search(token) != None:
-            return True
-    return False
+    #have to join b/c periods split up tokens
+    allText = "".join(tokenList)
+    if p.search(allText):
+        return True
+    else:
+        return False
 
 def preProcess(message):
     """lowercase and tokenize input"""
