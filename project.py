@@ -6,7 +6,7 @@ from sklearn import datasets
 from sklearn.feature_extraction import DictVectorizer
 import numpy as np
 from nltk import word_tokenize
-from sklearn.metrics import confusion_matrix
+import sklearn.metrics
 
 def text(fiel):
     lst = []
@@ -213,8 +213,7 @@ def main():
     svmTrainDataVectored = vec.fit_transform(svmDataTrain).toarray()
     svmTestDataVectored = vec.fit_transform(svmDataTest).toarray()
     
-    print 'lengths'
-    print len(svmTestDataVectored)
+    print 'total # of features: '
     print len(svmTestDataVectored[0])
     svmClass = svm.SVC(kernel = 'rbf', gamma=0.0005, C = 600)
     
@@ -237,8 +236,28 @@ def main():
     """
     print "fitting SVM"
     test_predict = svmClass.fit(svmTrainDataVectored, svmAnsTrain).predict(svmTestDataVectored)
+    """
 
-    cm = confusion_matrix(svmAnsTest, test_predict)
+    print "Num items in test ham: " + str(len(hamProcessedTest))
+    print "Num itmes in test spam: " + str(len(spamProcessedTest))
+
+    print "Num items in test ans: " + str(len(test_predict))
+    for i in range(len(test_predict)):
+        if test_predict[i] != svmAnsTest[i]:
+            print "Test index wrong: " + str(i)
+            print "Raw Text message: "
+            if i >= len(hamFeaturedTest):
+                print "Index in spam: "
+                spamIndex = i - len(hamProcessedTest)
+                print spamProcessedTest[spamIndex]
+            else:
+                print hamFeaturedTest[i]
+    """
+
+    print sklearn.metrics.classification_report(svmAnsTest, test_predict)
+
+
+    cm = sklearn.metrics.confusion_matrix(svmAnsTest, test_predict)
 
     print svmClass.get_params() #Print out params
     print cm                    #Print confusion matrix
@@ -275,7 +294,8 @@ def main():
     print "fitting SVM again" 
     test_predict = svmClass.fit(svmTrainDataVectored, svmAnsTrain).predict(svmTestDataVectored)
 
-    cm = confusion_matrix(svmAnsTest, test_predict)
+    print sklearn.metrics.classification_report(svmAnsTest, test_predict)
+    cm = sklearn.metrics.confusion_matrix(svmAnsTest, test_predict)
 
     print cm
 
