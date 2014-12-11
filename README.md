@@ -1,8 +1,11 @@
 ===============================================================================
 
 RIT - ENGL 481/781 - Intro to Natural Language Processing
+
 Finding important features for classification of spam in SMS messages
+
 Doug Dlutz    <djd3681@rit.edu>
+
 Ryan Dennehy  <rmd5947@rit.edu>
 
 ===============================================================================
