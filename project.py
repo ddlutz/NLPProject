@@ -236,7 +236,11 @@ def main():
     """
     print "fitting SVM"
     test_predict = svmClass.fit(svmTrainDataVectored, svmAnsTrain).predict(svmTestDataVectored)
+
     """
+    Uncomment below code to display 
+    answers which were predicted incorrectly
+
 
     print "Num items in test ham: " + str(len(hamProcessedTest))
     print "Num itmes in test spam: " + str(len(spamProcessedTest))
@@ -244,14 +248,15 @@ def main():
     print "Num items in test ans: " + str(len(test_predict))
     for i in range(len(test_predict)):
         if test_predict[i] != svmAnsTest[i]:
+            print "*******************"
             print "Test index wrong: " + str(i)
-            print "Raw Text message: "
             if i >= len(hamFeaturedTest):
-                print "Index in spam: "
                 spamIndex = i - len(hamProcessedTest)
+                print "Index in spam: " + str(spamIndex)
                 print spamProcessedTest[spamIndex]
             else:
                 print hamFeaturedTest[i]
+            print "*******************"
     """
 
     print sklearn.metrics.classification_report(svmAnsTest, test_predict)
